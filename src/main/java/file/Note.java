@@ -15,7 +15,8 @@ public class Note {
 
     }
 
-    public static void in() { // 대상 파일의 내용을 읽어오는 메서드
+    public static StringBuffer in() { // 대상 파일의 내용을 읽어오는 메서드
+        StringBuffer sb = new StringBuffer();
         try {
 //            FileInputStream fileInputStream = new FileInputStream("src/text.txt");
 //            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
@@ -26,8 +27,8 @@ public class Note {
 
             int value = 0;
             while ((value = bufferedReader.read()) != -1) {
-                System.out.print( (char) value);
-
+//                System.out.print( (char) value);
+                sb.append((char) value);
             }
             bufferedReader.close();
 
@@ -38,6 +39,7 @@ public class Note {
             throw new RuntimeException(e);
         }
 
+        return sb;
     }
 
     public static void out(String txt) { // 대상 파일의 내용을 입력하는 메서드

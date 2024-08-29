@@ -11,9 +11,12 @@ import java.net.Socket;
 public class ClientHandler implements Runnable{
 
     private Socket socket;
+    private PrintWriter out;
+    private StringBuffer history;
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
+        history = Note.in();
     }
 
     @Override
@@ -21,6 +24,12 @@ public class ClientHandler implements Runnable{
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+            synchronized (socket) {
+                MultiClientServer.clientWriters.add(out);
+            }
+
+            out.println(history.toString());
 
             String message;
             while((message = in.readLine()) != null) {
@@ -33,7 +42,11 @@ public class ClientHandler implements Runnable{
             System.out.println("클라이언트가 접속을 종료 하였습니다.");
         } finally {
             try {
+                synchronized (MultiClientServer.clientWriters) {
+                    MultiClientServer.clientWriters.remove(out);
+                }
                 socket.close();
+                System.out.println("클라이언트가 접속을 종료 하였습니다.");
             } catch (IOException e) {
 //				e.printStackTrace();
             }
