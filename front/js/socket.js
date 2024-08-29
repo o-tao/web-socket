@@ -1,7 +1,7 @@
 $(document).ready(() => {
     console.log("Socket!!");
     // WebSocket 대상 호스트(DNS) 정보
-    const server = "http://localhost:8080";
+    const server = "http://localhost:80";
     // WebSocket 접속 정보가 저장 될 변수 (접속 유지용)
     var stompClient = null;
     // 사용자 기본 정보 객체 (DTO와 동일하게 사용 가능)
