@@ -10,25 +10,22 @@ public class Server {
         // 소켓 통신 서버용으로 필수적으로 실행해야 사용자가 사용 가능
         try {
             ServerSocket serverSocket = new ServerSocket(9000);
-            System.out.println("Socket Server Start");
+            System.out.println("=> Socket Server Start <=");
 
             while (true) {
                 Socket socket = serverSocket.accept(); // 소켓 서버 접속 허용 처리
-
                 OutputStream outputStream = socket.getOutputStream();
 
                 // 1. 입력
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
                 // 2. 출력
                 PrintWriter printWriter = new PrintWriter(outputStream, true);
 
-                System.out.println("Client Connected");
+                System.out.println("=> Client Connected <=");
 
-                String massage = bufferedReader.readLine();
-                System.out.println("Client Message: " + massage);
-
-                printWriter.println("Server Message: " + massage);
+                String message = bufferedReader.readLine();
+                System.out.println("=> Client Message: " + message);
+                printWriter.println("=> Server Message: " + message);
 
             }
 
