@@ -35,8 +35,7 @@ public class Server {
             }
 
         } catch (IOException e) { // 예외처리 필수
-//            throw new RuntimeException(e);
-            System.out.println("클라이언트 접속 종료");
+            throw new RuntimeException(e);
         }
     }
 }
