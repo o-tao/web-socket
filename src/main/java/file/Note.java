@@ -9,11 +9,34 @@ public class Note {
         Scanner scanner = new Scanner(System.in);
 
         String txt = scanner.nextLine();
-        out(txt);
+        out(txt); // 입력받은 txt 입력(저장)
+
+        in(); // 입력받은 txt 가져오기(읽기)
 
     }
 
     public static void in() { // 대상 파일의 내용을 읽어오는 메서드
+        try {
+//            FileInputStream fileInputStream = new FileInputStream("src/text.txt");
+//            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+//            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            // 위의 3줄 한줄 처리
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("src/text.txt")));
+
+            int value = 0;
+            while ((value = bufferedReader.read()) != -1) {
+                System.out.print( (char) value);
+
+            }
+            bufferedReader.close();
+
+        } catch (FileNotFoundException e) { // FileInputStream 예외처리
+            throw new RuntimeException(e);
+
+        } catch (IOException e) { // bufferedWriter.write 예외처리
+            throw new RuntimeException(e);
+        }
 
     }
 
