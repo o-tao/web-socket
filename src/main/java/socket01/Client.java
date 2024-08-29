@@ -12,7 +12,7 @@ public class Client {
     public static void main(String[] args) {
         // 소켓 서버를 실행해야 접속하여 사용 가능
         try {
-            Socket socket = new Socket("localhost", 9000);
+            Socket socket = new Socket("localhost", 9000); // host: 주소값 / port: 서버포트
 
             // 1. 입력
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -25,11 +25,11 @@ public class Client {
             while (true) {
                 String message = scanner.nextLine();
 
-                System.out.println("=> Server Message: " + message);
+                System.out.println("=> Server Message: " + message); // 전송한 메세지 출력
                 printWriter.println(message);
 
                 String result = bufferedReader.readLine();
-                System.out.println("=> Server Result: " + result);
+                System.out.println("=> Server Result: " + result); // 서버 응답 메세지 출력
             }
 
         } catch (IOException e) { // 예외처리 필수

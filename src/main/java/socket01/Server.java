@@ -23,9 +23,14 @@ public class Server {
 
                 System.out.println("=> Client Connected <=");
 
-                String message = bufferedReader.readLine();
-                System.out.println("=> Client Message: " + message);
-                printWriter.println("=> Server Message: " + message);
+//                String message = bufferedReader.readLine();
+
+                // 지속적인 메세지 전달
+                String message;
+                while ((message = bufferedReader.readLine()) != null) {
+                    System.out.println("=> Client Message: " + message); // Client에서 전달 한 메세지 출력
+                    printWriter.println("=> Server Message: " + message); // Client로 메세지 전달
+                }
 
             }
 
