@@ -21,21 +21,22 @@ public class Server {
                 // 2. 출력
                 PrintWriter printWriter = new PrintWriter(outputStream, true);
 
-                System.out.println("=> Client Connected <=");
+                System.out.println("=> 클라이언트 연결 <=");
 
 //                String message = bufferedReader.readLine();
 
                 // 지속적인 메세지 전달
                 String message;
                 while ((message = bufferedReader.readLine()) != null) {
-                    System.out.println("=> Client Message: " + message); // Client에서 전달 한 메세지 출력
-                    printWriter.println("=> Server Message: " + message); // Client로 메세지 전달
+                    System.out.println("=> 클라이언트 대화 메세지: " + message); // Client에서 전달 한 메세지 출력
+                    printWriter.println("=> 서버 메세지: " + message); // Client로 메세지 전달
                 }
 
             }
 
         } catch (IOException e) { // 예외처리 필수
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            System.out.println("클라이언트 접속 종료");
         }
     }
 }

@@ -19,21 +19,22 @@ public class Client {
             // 2. 출력
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
 
-            System.out.println("=> Server Connected <=");
+            System.out.println("=> 서버 연결 <=");
             Scanner scanner = new Scanner(System.in);
 
             while (true) {
                 String message = scanner.nextLine();
 
-                System.out.println("=> Server Message: " + message); // 전송한 메세지 출력
+                System.out.println("=> 서버 메세지: " + message); // 전송한 메세지 출력
                 printWriter.println(message);
 
                 String result = bufferedReader.readLine();
-                System.out.println("=> Server Result: " + result); // 서버 응답 메세지 출력
+                System.out.println("=> 서버 응답: " + result); // 서버 응답 메세지 출력
             }
 
         } catch (IOException e) { // 예외처리 필수
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            System.out.println("클라이언트 접속 종료");
         }
     }
 }
