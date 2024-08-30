@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord</title>
+    <link rel="stylesheet" href="/css/discord.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/js/sidebar.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo" id="logo">
+                <svg width="200" height="50" xmlns="http://www.w3.org/2000/svg">
+                    <text x="0" y="40" font-family="Arial, sans-serif" font-size="40" fill="#ffffff">WJ</text>
+                </svg>
+            </div>
+            <div class="servers">
+                <div class="server">
+                    <img src="/img/login.png" alt="로그인">
+                </div>
+                <h3 class="server-txt">로그인</h3>
+            </div>
+            <hr class="line">
+            <div class="channels">
+                <ul id="channel-list">
+                    <!--
+                        <li class="channel"># <span class="channel-txt">general</span></li>
+                        <li class="channel"># <span class="channel-txt">random</span></li>
+                        <li class="channel"># <span class="channel-txt">announcements</span></li>
+                    -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <div class="header">
+                <h1># <span id="channel"></span></h1>
+            </div>
+            <div class="messages">
+                <!--
+                <div class="message">
+                    <h3 class="message-user">친구1:</h3>
+                    <div class="message-body">
+                        <p class="message-content">안녕하세요!</p>
+                        <p class="message-time message-right">15:32</p>
+                    </div>
+                </div>
+                <div class="message message-right">
+                    <h3 class="message-user">나:</h3>
+                    <div class="message-body">
+                        <p class="message-content">안녕!!</p>
+                        <p class="message-time message-left">15:35</p>
+                    </div>
+                </div>
+                -->
+            </div>
+            <div class="input-area">
+                <form id="messageForm">
+                    <input type="text" name="message" id="message" placeholder="전송할 내용을 작성해주세요." readonly>
+                    <button type="submit" disabled>전송</button>
+                    <button type="button" id="socketClose">채널 나가기</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <span class="close" id="close">&times;</span>
+                <h2>Login</h2>
+                <form id="loginForm">
+                    <div>
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div>
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit">로그인</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
