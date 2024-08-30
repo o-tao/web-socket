@@ -54,6 +54,9 @@ $(document).ready(function() {
                 </div>
             </div>`;
         $(".messages").append(html);
+
+        // 스크롤을 최신 메시지로 자동으로 내리기
+        $(".messages").scrollTop($(".messages")[0].scrollHeight);
     };
 
     // 슬라이드 이벤트 
