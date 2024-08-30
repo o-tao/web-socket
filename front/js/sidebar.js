@@ -24,9 +24,12 @@ $(document).ready(function() {
     const EVENT1 = (endpoint, topic) => {
         console.log("1단계");
         stompClient = Stomp.over(new SockJS(endpoint));
+
         stompClient.connect({}, frame => {
             console.log("2단계", frame);
             stompClient.subscribe(topic, EVENT2);
+            stompClient.subscribe(topic + "/history", loadHistory); // 서버에서 기록된 메시지 수신을 위한 구독
+
         }, error => console.log(error));
     };
 
@@ -57,6 +60,12 @@ $(document).ready(function() {
 
         // 스크롤을 최신 메시지로 자동으로 내리기
         $(".messages").scrollTop($(".messages")[0].scrollHeight);
+    };
+
+    const loadHistory = (msg) => {
+        const history = JSON.parse(msg.body);
+        $(".messages").empty(); // 기존 메시지 삭제
+        history.forEach(user => DRAW(user)); // 기록된 메시지 화면에 표시
     };
 
     // 슬라이드 이벤트 
