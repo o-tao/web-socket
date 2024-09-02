@@ -51,8 +51,11 @@ public class MessageController {
 
     // "/msg/set"
     @MessageMapping("/set")
-    public void conn2(String message) {
+    // "/topic/get"
+    @SendTo("/topic/get")
+    public String conn2(String message) {
         log.info("Message : {}", message);
+        return "성공";
     }
 
     @EventListener

@@ -13,22 +13,24 @@
         // 서버 접속 성공
         const e1 = () => {
             console.log("접속 성공");
-            e3();
+            client.subscribe("/topic/get", res => console.log(res))
         };
-
         // 서버 접속 실패
-        const e2 = () => {
-            console.log("접속 실패");
-        };
-
+        const e2 = () => {console.log("접속 실패");};
         client.connect({}, e1, e2);
 
+        // 메세지 전송 이벤트
         const e3 = () => {
-            client.send("/msg/set", {}, "Test 내용");
+            console.log(client)
+            if (client.connected) {
+                client.send("/msg/set", {}, "Test 내용");
+            } else {
+                alert("소켓 정보가 없습니다.")
+            }
         };
     </script>
 </head>
 <body>
-
+    <button onclick="e3()" type="button">메세지 전송</button>
 </body>
 </html>
