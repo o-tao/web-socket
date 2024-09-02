@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     const channels = [
         {channelNo: 1, channelNm: "야놀자", prefixes: "/topic/bean1", topic: "/msg/conn1"},
@@ -10,6 +10,7 @@ $(document).ready(function() {
 
     const server = "http://192.168.0.9:80";
     var stompClient = null;
+
     class User {
         constructor(userNo, userNm, message, time, prefixes) {
             this.userNo = userNo;
@@ -18,7 +19,7 @@ $(document).ready(function() {
             this.time = time;
             this.prefixes = prefixes;
         }
-    };
+    }
 
     // 채널입장 이벤트
     const EVENT1 = (endpoint, topic) => {
@@ -28,7 +29,6 @@ $(document).ready(function() {
         stompClient.connect({}, frame => {
             console.log("2단계", frame);
             stompClient.subscribe(topic, EVENT2);
-            stompClient.subscribe(topic + "/history", loadHistory); // 서버에서 기록된 메시지 수신을 위한 구독
 
         }, error => console.log(error));
     };
@@ -37,7 +37,7 @@ $(document).ready(function() {
 
     const EVENT3 = (prefixes, user) => {
         console.log("3단계");
-		stompClient.send(prefixes, {}, JSON.stringify(user));
+        stompClient.send(prefixes, {}, JSON.stringify(user));
     };
 
     // 종료 이벤트
@@ -45,6 +45,12 @@ $(document).ready(function() {
         stompClient.disconnect(() => {
             console.log("연결 종료");
         });
+    }
+
+    const EVENT5 = () => {
+        if (message != null) {
+            stompClient.subscribe(message.topic, EVENT2);
+        }
     }
 
     // 웹소켓에서 전달 받은 메세지 출력 이벤트
@@ -62,62 +68,43 @@ $(document).ready(function() {
         $(".messages").scrollTop($(".messages")[0].scrollHeight);
     };
 
-    const loadHistory = (msg) => {
-        const history = JSON.parse(msg.body);
-        $(".messages").empty(); // 기존 메시지 삭제
-        history.forEach(user => DRAW(user)); // 기록된 메시지 화면에 표시
-    };
-
     // 슬라이드 이벤트 
     $('#logo').on('click', () => {
         let width = $('#sidebar').width();
         $(".server-txt").hide();
         $(".channel-txt").hide();
-        $('#sidebar').animate({ width: (width === 250) ? 70 : 250 }, 500, ()=> {
-            if(width === 70) {
+        $('#sidebar').animate({width: (width === 250) ? 70 : 250}, 500, () => {
+            if (width === 70) {
                 $(".server-txt").show();
                 $(".channel-txt").show();
             }
-        });        
+        });
     });
 
     const fnChannelEvent = () => {
         // 채널 목록 중 하나를 선택하면 발생하는 이벤트
-        $(".channel").off().on("click", function() {
+        $(".channel").off().on("click", function () {
             $("#channel").text($(this).children(".channel-txt").text());
 
             //채널 입장시 메세지입력, 버튼 활성화
-            $("#message").attr("readonly",false);
+            $("#message").attr("readonly", false);
             $("#messageForm button").attr("disabled", false);
 
             // 종료 이벤트
-            if(stompClient != null) {
+            if (stompClient != null) {
                 EVENT4();
             }
 
             var index = $(".channel").index(this);
-            // console.log(index, channels[index], channels[index].prefixes);
 
-            /*
-            // 채널 입장 시 메세지 출력
-            const list = [
-                new User(1, "류관순", "안녕하세요!", "15:23"),
-                new User(2, "홍길동", "안녕!!", "15:25")
-            ];
-            $(".messages").empty();
-            list.forEach(user => DRAW(user));
-            */
-
-            // 웹소켓 호출 부분(서버 접속을 위한 주소값 + config, 돌려받는 내용)
-            // EVENT1(server+"/ws-app", "/topic/bean");
             prefixes = channels[index].prefixes;
-            EVENT1(server+"/ws-app", prefixes);
+            EVENT1(server + "/ws-app", prefixes);
         });
     };
 
     $("#socketClose").on("click", () => {
         $("#channel").text("");
-        $("#message").attr("readonly",true);
+        $("#message").attr("readonly", true);
         $("#messageForm button").attr("disabled", true);
         $(".messages").empty();
         EVENT4();
@@ -127,8 +114,8 @@ $(document).ready(function() {
     $(".server").on("click", () => {
         $('#modal').toggle();
     });
-    $("#close").on("click", ()=>$('#modal').hide());
-    $(window).on('click', function(event) {
+    $("#close").on("click", () => $('#modal').hide());
+    $(window).on('click', function (event) {
         if ($(event.target).is('#modal')) {
             $('#modal').hide();
         }
@@ -147,10 +134,10 @@ $(document).ready(function() {
 
         /************************************
          * #전송하는 대상자 정보 및 메세지 담기
-         * @userNo : 사용자 번호
-         * @userNm : 사용자 이름
+         * @userNo  : 사용자 번호
+         * @userNm  : 사용자 이름
          * @message : 메세지 내용
-         * @time : 전송하는 시간
+         * @time    : 전송하는 시간
          ************************************/
         const currentDate = new Date();
         const formattedDate = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
@@ -164,6 +151,7 @@ $(document).ready(function() {
         EVENT3("/msg/conn", user);
     });
 
+    // 채널 목록을 출력하는 이벤트
     const fnChannel = () => {
 
         channels.forEach(channel => {

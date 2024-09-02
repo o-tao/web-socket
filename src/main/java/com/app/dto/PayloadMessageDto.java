@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PayloadMessageDto {
+public class PayloadMessageDto { // 프론트에서 받는 값
 
     private MessageDto message;
     private UserDto user;

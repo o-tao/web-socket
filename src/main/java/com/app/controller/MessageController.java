@@ -1,12 +1,5 @@
 package com.app.controller;
 
-import java.io.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import com.app.dto.PayloadMessageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,55 +14,65 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+
 @Slf4j
 @Controller
 public class MessageController {
 
-	@Autowired
-	private SimpMessagingTemplate simpMessagingTemplate;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
-	private static final String MESSAGE_LOG_FILE = "src/text.txt";
+    // "/msg/conn" >> 접속
+    @MessageMapping("/conn")
+    @SendTo("/topic/bean")
+    public Map<String, String> conn(Map<String, String> paramMap) {
+        log.info("Path : {}", "/conn");
+        return paramMap;
+    }
 
-	@MessageMapping("/conn")
-	@SendTo("/topic/bean")
-	public Map<String, String> conn(Map<String, String> paramMap) {
-		log.info("Path : {}", "/conn");
-		return paramMap;
-	}
+    // "/msg/room" >> 접속
+    @MessageMapping("/room")
+    public void conn1(@Payload PayloadMessageDto payloadDTO, SimpMessageHeaderAccessor headerAccessor) {
+        log.info("Path : {}", "/room");
 
-	@MessageMapping("/room")
-	public void conn1(@Payload PayloadMessageDto payloadDTO, SimpMessageHeaderAccessor headerAccessor) {
-		log.info("Path : {}", "/room");
+        String sessionId = headerAccessor.getSessionId();
+        log.info("SessionID : {}", sessionId);
 
-		String sessionId = headerAccessor.getSessionId();
-		log.info("SessionID : {}", sessionId);
+        String topic = payloadDTO.getMessage().getTopic();
+        payloadDTO.getMessage().setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
+        if (topic != null) {
+            log.info("Payload : {}", payloadDTO);
+            simpMessagingTemplate.convertAndSend(topic, payloadDTO);
+        }
+    }
 
-		String topic = payloadDTO.getMessage().getTopic();
-		payloadDTO.getMessage().setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
-		if(topic != null) {
-			log.info("Payload : {}", payloadDTO);
-			simpMessagingTemplate.convertAndSend(topic, payloadDTO);
-		}
-	}
+    // "/msg/set"
+    @MessageMapping("/set")
+    public void conn2(String message) {
+        log.info("Message : {}", message);
+    }
 
-	@EventListener
-	public void handleSessionConnectEvent(SessionConnectEvent event) {
-		System.out.println("Session Connect Event");
-		System.out.println(event);
+    @EventListener
+    public void handleSessionConnectEvent(SessionConnectEvent event) {
+        System.out.println("Session Connect Event");
+        System.out.println(event);
 
-		// STOMP 헤더 접근기
-		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
+        // STOMP 헤더 접근기
+        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
 
-		// 클라이언트가 연결한 Endpoint를 가져오기
-		String sessionId = accessor.getSessionId();
+        // 클라이언트가 연결한 Endpoint를 가져오기
+        String sessionId = accessor.getSessionId();
 
-		// 연결 정보를 출력
-		System.out.println("Client connected with sessionId: " + sessionId);
-	}
+        // 연결 정보를 출력
+        System.out.println("Client connected with sessionId: " + sessionId);
+    }
 
-	@EventListener
-	public void handleSessionDisconnectEvent(SessionDisconnectEvent event) {
-		System.out.println("Session Disconnect Event");
-	}
+    @EventListener
+    public void handleSessionDisconnectEvent(SessionDisconnectEvent event) {
+        System.out.println("Session Disconnect Event");
+    }
 
 }
