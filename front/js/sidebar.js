@@ -35,9 +35,9 @@ $(document).ready(function () {
 
     const EVENT2 = msg => DRAW(JSON.parse(msg.body)); //console.log("4단계", JSON.parse(msg.body));
 
-    const EVENT3 = (prefixes, user) => {
+    const EVENT3 = (prefixes, payload) => {
         console.log("3단계");
-        stompClient.send(prefixes, {}, JSON.stringify(user));
+        stompClient.send(prefixes, {}, JSON.stringify(payload));
     };
 
     // 종료 이벤트
