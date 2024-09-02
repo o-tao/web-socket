@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page2</title>
+    <link href="/css/page2.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/js/page2.js"></script>
+</head>
+<body>
+<header>
+    <div class="servers">
+        <div class="server">
+            <img alt="로그인" src="/img/login.png">
+        </div>
+        <h3 class="server-txt">로그인</h3>
+    </div>
+    <div class="servers">
+        <div class="server">
+            <img alt="채널접속" id="btn2" src="/img/channel.png">
+        </div>
+        <h3 class="server-txt">채널접속</h3>
+    </div>
+</header>
+<main>
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close" id="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div>
+                    <label for="username">Username</label>
+                    <input id="username" name="username" required type="text">
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input id="password" name="password" required type="password">
+                </div>
+                <button type="submit">로그인</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="messages">
+
+
+    </div>
+    <div class="input-area">
+        <form id="messageForm">
+            <input id="message" name="message" type="text">
+            <button id="btn3" type="submit">전송</button>
+        </form>
+    </div>
+
+</main>
+</body>
+</html>
