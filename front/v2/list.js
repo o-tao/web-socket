@@ -14,10 +14,14 @@ $(document).ready(() => {
     const errorEvent = (data) => console.log(data);
     const detailEvent = () => {
         $("#list > a").on("click", (e) => {
-            e.preventDefault();
-            //var index = $("#list > a").index(e.target);
-            var no = $(e.target).attr("no");
-            location.href = "/v2/detail.html#" + no;
+            if (localStorage.getItem("userNm") != null) {
+                e.preventDefault();
+                //var index = $("#list > a").index(e.target);
+                var no = $(e.target).attr("no");
+                location.href = "/v2/detail.html#" + no;
+            } else {
+                alert("로그인 후 이용하세요.")
+            }
         });
     }
     const getData = (url) => {
@@ -69,5 +73,25 @@ $(document).ready(() => {
             res => console.log(res)
         );
     }
+
+    // 모달 방식 로그인 이벤트
+    $(".server").on("click", () => {
+        $('#modal').toggle();
+    });
+    $("#close").on("click", () => $('#modal').hide());
+
+    $(window).on('click', function (event) {
+        if ($(event.target).is('#modal')) {
+            $('#modal').hide();
+        }
+    });
+
+    // 로그인 버튼 선택시 동작이벤트
+    $("form#loginForm").on("submit", e => {
+        e.preventDefault();
+        localStorage.setItem("userNm", $("#username").val());
+        $('#modal').hide();
+    });
+
     getData(host + "/v2/findList");
 });
