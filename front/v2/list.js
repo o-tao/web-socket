@@ -53,6 +53,17 @@ $(document).ready(() => {
                     console.log(res);
                     var msg = JSON.parse(res.body);
                     console.log(msg);
+                    $("#list a").each((i, e) => {
+                        if ($(e).attr("no") == msg.no) {
+                            if (msg.accept) {
+                                $(e).addClass("bg-success");
+                                $(e).removeClass("bg-warning");
+                            } else {
+                                $(e).addClass("bg-warning");
+                                $(e).removeClass("bg-success");
+                            }
+                        }
+                    });
                 })
             },
             res => console.log(res)
