@@ -1,5 +1,5 @@
 $(document).ready(() => {
-	const host = "http://localhost:8080";
+	const host = "http://localhost:80";
 	const linkEvent = (data) => {
 		if(data.no != undefined){
 			alert("작성이 성공 하였습니다.");
