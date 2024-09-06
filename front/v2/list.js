@@ -1,5 +1,6 @@
 $(document).ready(() => {
-    const host = "http://localhost:80";
+    const host = "http://192.168.0.52:8080";
+    const host2 = "http://192.168.0.67:9000";
     var list = [];
     const renderEvent = (data) => {
         list = data;
@@ -14,8 +15,8 @@ $(document).ready(() => {
     const errorEvent = (data) => console.log(data);
     const detailEvent = () => {
         $("#list > a").on("click", (e) => {
-            if (localStorage.getItem("userNm") != null) {
-                e.preventDefault();
+            e.preventDefault();
+            if (localStorage.getItem("token") != null) {
                 //var index = $("#list > a").index(e.target);
                 var no = $(e.target).attr("no");
                 location.href = "/v2/detail.html#" + no;
@@ -54,9 +55,9 @@ $(document).ready(() => {
             () => {
                 console.log("접속 성공");
                 client.subscribe("/topic/accept", res => {
-                    console.log(res);
+                    // console.log(res);
                     var msg = JSON.parse(res.body);
-                    console.log(msg);
+                    // console.log(msg);
                     $("#list a").each((i, e) => {
                         if ($(e).attr("no") == msg.no) {
                             if (msg.accept) {
@@ -74,23 +75,44 @@ $(document).ready(() => {
         );
     }
 
-    // 모달 방식 로그인 이벤트
-    $(".server").on("click", () => {
-        $('#modal').toggle();
-    });
-    $("#close").on("click", () => $('#modal').hide());
+    // // 모달 방식 로그인 이벤트
+    // $(".server").on("click", () => {
+    //     $('#modal').toggle();
+    // });
+    // $("#close").on("click", () => $('#modal').hide());
+    //
+    // $(window).on('click', function (event) {
+    //     if ($(event.target).is('#modal')) {
+    //         $('#modal').hide();
+    //     }
+    // });
+    //
+    // // 로그인 버튼 선택시 동작이벤트
+    // $("form#loginForm").on("submit", e => {
+    //     e.preventDefault();
+    //     localStorage.setItem("userNm", $("#username").val());
+    //     $('#modal').hide();
+    // });
 
-    $(window).on('click', function (event) {
-        if ($(event.target).is('#modal')) {
-            $('#modal').hide();
-        }
-    });
-
-    // 로그인 버튼 선택시 동작이벤트
-    $("form#loginForm").on("submit", e => {
+    $("#myModal form").on("submit", e => {
         e.preventDefault();
-        localStorage.setItem("userNm", $("#username").val());
-        $('#modal').hide();
+        let params = {
+            userNm: $("#userNm").val(),
+            userPwd: $("#userPwd").val()
+        }
+        $.post(host2 + "/login", params)
+            .done(res => {
+                if (res.state) {
+                    localStorage.setItem("token", res.token);
+                    $('#myModal').modal('hide');
+                    /*
+                    alert(res.userNm + "님 환영 합니다.");
+                    */
+                } else {
+                    alert("유효한 사용자가 아닙니다.");
+                }
+            })
+            .fail(errorEvent);
     });
 
     getData(host + "/v2/findList");

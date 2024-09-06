@@ -1,5 +1,5 @@
 $(document).ready(() => {
-    const host = "http://localhost:80";
+    const host = "http://192.168.0.52:8080";
     let map = {};
     let no = location.hash.substring(1); //0;
     //let paths = location.pathname.split("/");
